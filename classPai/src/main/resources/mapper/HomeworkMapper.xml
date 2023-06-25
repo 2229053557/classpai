@@ -1,0 +1,28 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.HomeworkDao">
+    <resultMap id="BaseResultMap" type="com.example.demo.entity.superHomework" >
+        <id column="cId" property="cId" jdbcType="INTEGER" />
+        <id column="hId" property="hId" jdbcType="INTEGER" />
+        <result column="homeworkType" property="homeworkType" jdbcType="VARCHAR" />
+        <result column="hTitle" property="hTitle" jdbcType="VARCHAR" />
+        <result column="hContent" property="hContent" jdbcType="VARCHAR" />
+        <result column="releaseTime" property="releaseTime" jdbcType="VARCHAR" />
+        <result column="deadline" property="deadline" jdbcType="VARCHAR" />
+        <result column="fullScore" property="fullScore" jdbcType="VARCHAR" />
+    </resultMap>
+    <select id="findCourseHomework" resultMap="BaseResultMap">
+    select * from homework where cId=#{cId};
+    </select>
+
+    <select id="findOneCourseHomework" resultMap="BaseResultMap">
+    select * from homework where cId=#{cId} and hId=#{hId};
+    </select>
+
+    <insert id="insertHomework"  parameterType="com.example.demo.entity.homework" useGeneratedKeys="true" keyProperty="hId">
+    insert into homework (cId, homeworkType, hTitle, hContent, releaseTime, deadline,fullScore)
+    values (#{cId,jdbcType=INTEGER}, #{homeworkType,jdbcType=VARCHAR}, #{hTitle,jdbcType=VARCHAR},#{hContent,jdbcType=VARCHAR},
+      #{releaseTime,jdbcType=VARCHAR}, #{deadline,jdbcType=VARCHAR}, #{fullScore,jdbcType=VARCHAR})
+    </insert>
+</mapper>

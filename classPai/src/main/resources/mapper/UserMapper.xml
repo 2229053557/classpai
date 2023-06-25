@@ -1,0 +1,63 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.UserDao">
+    <resultMap id="BaseResultMap" type="com.example.demo.entity.User" >
+        <id column="mailboxOrTel" property="mailboxOrTel" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="stuNumber" property="stuNumber" jdbcType="VARCHAR" />
+        <result column="classPaiNum" property="classPaiNum" jdbcType="VARCHAR" />
+        <result column="role" property="role" jdbcType="VARCHAR" />
+        <result column="school" property="school" jdbcType="VARCHAR" />
+        <result column="department" property="department" jdbcType="VARCHAR" />
+        <result column="major" property="major" jdbcType="VARCHAR" />
+        <result column="coursesTaught" property="coursesTaught" jdbcType="VARCHAR" />
+        <result column="headPortrait" property="headPortrait" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+    mailboxOrTel, password, name, classPaiNum, role, school, department, major, coursesTaught,headPortrait
+    </sql>
+
+   <select id="loadUserByMailboxOrTel" resultMap="BaseResultMap">
+    select * from user where mailboxOrTel=#{mailboxOrTel};
+   </select>
+
+    <select id="findUserByClassPaiNum" resultMap="BaseResultMap">
+    select * from user where classPaiNum=#{classPaiNum};
+   </select>
+
+    <delete id="deleteByMailboxOrTel" parameterType="java.lang.String">
+        delete from user where mailboxOrTel=#{mailboxOrTel};
+    </delete>
+
+    <select id="selectByMailboxOrTel" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from user
+        where String mailboxOrTel = #{String mailboxOrTel,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insertUse" parameterType="com.example.demo.entity.User" >
+    insert into user (mailboxOrTel, password, name,stuNumber,classPaiNum, role, school, department, major, coursesTaught,headPortrait)
+    values (#{mailboxOrTel,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},#{stuNumber,jdbcType=VARCHAR},
+      #{classPaiNum,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR}, #{school,jdbcType=VARCHAR},
+      #{department,jdbcType=VARCHAR}, #{major,jdbcType=VARCHAR}, #{coursesTaught,jdbcType=VARCHAR}, #{headPortrait,jdbcType=VARCHAR})
+  </insert>
+
+    <update id="updateUser" parameterType="com.example.demo.entity.User" >
+    update user
+    set mailboxOrTel = #{mailboxOrTel,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      stuNumber = #{stuNumber,jdbcType=VARCHAR},
+      role = #{role,jdbcType=VARCHAR},
+      school = #{school,jdbcType=VARCHAR},
+      department = #{department,jdbcType=VARCHAR},
+      major = #{major,jdbcType=VARCHAR},
+      coursesTaught = #{coursesTaught,jdbcType=VARCHAR},
+      headPortrait = #{headPortrait,jdbcType=VARCHAR}
+      where classPaiNum = #{classPaiNum,jdbcType=VARCHAR}
+  </update>
+</mapper>    

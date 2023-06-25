@@ -1,0 +1,66 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.UserCourseHomeworkDao">
+    <resultMap id="BaseResultMap" type="com.example.demo.entity.UserCourseHomework" >
+        <id column="hId" property="hId" jdbcType="INTEGER" />
+        <id column="cId" property="cId" jdbcType="INTEGER" />
+        <id column="classPaiNum" property="classPaiNum" jdbcType="VARCHAR" />
+        <result column="submitContent" property="submitContent" jdbcType="ARRAY" typeHandler="com.example.demo.util.ListTypeHandler" />
+        <result column="leavingMessage" property="leavingMessage" jdbcType="VARCHAR" />
+        <result column="isAlreadySubmit" property="isAlreadySubmit" jdbcType="VARCHAR" />
+        <result column="isAlreadyCorrecting" property="isAlreadyCorrecting" jdbcType="VARCHAR" />
+        <result column="achievement" property="achievement" jdbcType="VARCHAR" />
+        <result column="isHideAchievement" property="isHideAchievement" jdbcType="VARCHAR" />
+        <result column="teacherComments" property="teacherComments" jdbcType="VARCHAR" />
+        <result column="reviewTimes" property="reviewTimes" jdbcType="INTEGER" />
+        <result column="repulseTime" property="repulseTime" jdbcType="INTEGER" />
+        <result column="expeditingTimes" property="expeditingTimes" jdbcType="INTEGER" />
+    </resultMap>
+    <resultMap id="superResultMap" type="com.example.demo.entity.superUserHomework" >
+        <id column="hId" property="hId" jdbcType="INTEGER" />
+        <id column="cId" property="cId" jdbcType="INTEGER" />
+        <id column="classPaiNum" property="classPaiNum" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="stuNumber" property="stuNumber" jdbcType="VARCHAR" />
+        <result column="submitContent" property="submitContent" jdbcType="ARRAY" typeHandler="com.example.demo.util.ListTypeHandler" />
+        <result column="leavingMessage" property="leavingMessage" jdbcType="VARCHAR" />
+        <result column="isAlreadySubmit" property="isAlreadySubmit" jdbcType="VARCHAR" />
+        <result column="isAlreadyCorrecting" property="isAlreadyCorrecting" jdbcType="VARCHAR" />
+        <result column="achievement" property="achievement" jdbcType="VARCHAR" />
+        <result column="isHideAchievement" property="isHideAchievement" jdbcType="VARCHAR" />
+        <result column="teacherComments" property="teacherComments" jdbcType="VARCHAR" />
+        <result column="reviewTimes" property="reviewTimes" jdbcType="INTEGER" />
+        <result column="repulseTime" property="repulseTime" jdbcType="INTEGER" />
+        <result column="expeditingTimes" property="expeditingTimes" jdbcType="INTEGER" />
+    </resultMap>
+    <select id="findSubmitNums" resultType="integer">
+    select Count(*) from usercoursehomework where cId=#{cId,jdbcType=INTEGER} and hId=#{hId,jdbcType=INTEGER} and isAlreadySubmit=#{isAlreadySubmit,jdbcType=VARCHAR};
+    </select>
+
+    <select id="findCorrectingNums" resultType="integer">
+    select Count(*) from usercoursehomework where cId=#{cId,jdbcType=INTEGER} and hId=#{hId,jdbcType=INTEGER} and isAlreadyCorrecting=#{isAlreadyCorrecting,jdbcType=VARCHAR};
+    </select>
+
+    <select id="findOneUserCourseHomework" resultMap="BaseResultMap">
+    select * from usercoursehomework where cId=#{cId,jdbcType=INTEGER} and hId=#{hId,jdbcType=INTEGER} and classPaiNum=#{classPaiNum,jdbcType=VARCHAR};
+    </select>
+
+    <select id="findAllUserHomework" resultMap="superResultMap">
+    select a.name,a.stuNumber,b.* from (SELECT * FROM `user` WHERE user.classPaiNum in (SELECT classPaiNum FROM usercourse where cId =#{cId,jdbcType=INTEGER} and role = #{role,jdbcType=VARCHAR})) a  left join usercoursehomework b  ON a.classPaiNum = b.classPaiNum where cId =#{cId,jdbcType=INTEGER} and hId =#{hId,jdbcType=INTEGER};
+    </select>
+
+    <update id="reSubmitHomework" parameterType="com.example.demo.entity.UserCourseHomework">
+    update usercoursehomework set submitContent = #{submitContent,jdbcType=ARRAY,typeHandler=com.example.demo.util.ListTypeHandler} where cId=#{cId,jdbcType=INTEGER} and hId=#{hId,jdbcType=INTEGER} and classPaiNum=#{classPaiNum,jdbcType=VARCHAR};
+    </update>
+
+    <update id="subAchievement" parameterType="com.example.demo.entity.UserCourseHomework">
+    update usercoursehomework set achievement = #{achievement,jdbcType=VARCHAR},isAlreadyCorrecting = #{isAlreadyCorrecting,jdbcType=VARCHAR},teacherComments = #{teacherComments,jdbcType=VARCHAR} where cId=#{cId,jdbcType=INTEGER} and hId=#{hId,jdbcType=INTEGER} and classPaiNum=#{classPaiNum,jdbcType=VARCHAR};
+    </update>
+
+    <insert id="submitHomework"  parameterType="com.example.demo.entity.UserCourseHomework">
+    insert into usercoursehomework (hId, cId, classPaiNum, submitContent, leavingMessage, isAlreadySubmit)
+    values (#{hId,jdbcType=INTEGER}, #{cId,jdbcType=INTEGER},#{classPaiNum,jdbcType=VARCHAR},
+      #{submitContent,jdbcType=ARRAY,typeHandler=com.example.demo.util.ListTypeHandler}, #{leavingMessage,jdbcType=VARCHAR}, #{isAlreadySubmit,jdbcType=VARCHAR})
+    </insert>
+</mapper>

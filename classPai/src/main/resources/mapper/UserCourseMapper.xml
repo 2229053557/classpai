@@ -1,0 +1,57 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.UserCourseDao">
+    <resultMap id="BaseResultMap" type="com.example.demo.entity.UserCourse" >
+        <id column="classPaiNum" property="classPaiNum" jdbcType="VARCHAR" />
+        <result column="cId" property="cId" jdbcType="INTEGER" />
+        <result column="role" property="role" jdbcType="VARCHAR" />
+        <result column="isTopping" property="isTopping" jdbcType="VARCHAR" />
+        <result column="serialNumber" property="serialNumber" jdbcType="INTEGER" />
+        <result column="isPlaceOnFile" property="isPlaceOnFile" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+    classPaiNum, cId, role,isTopping,serialNumber,isPlaceOnFile
+    </sql>
+    <select id="findUserCourse" resultMap="BaseResultMap">
+    select * from usercourse where classPaiNum=#{classPaiNum};
+    </select>
+
+    <select id="findUserCourseByCId" resultMap="BaseResultMap">
+    select * from usercourse where cId=#{cId,jdbcType=INTEGER} and role=#{role,jdbcType=VARCHAR};
+    </select>
+
+    <select id="findOneUserCourse" resultMap="BaseResultMap">
+    select * from usercourse where cId=#{cId,jdbcType=INTEGER} and classPaiNum=#{classPaiNum,jdbcType=VARCHAR};
+    </select>
+
+    <select id="findUserNums" resultType="integer">
+    select Count(*) from usercourse where cId=#{cId,jdbcType=INTEGER} and role=#{role,jdbcType=VARCHAR};
+    </select>
+
+    <update id="changeCourseTopping">
+    update usercourse set isTopping = #{isTopping,jdbcType=VARCHAR} where classPaiNum = #{classPaiNum,jdbcType=VARCHAR} and cId = #{cId,jdbcType=INTEGER}
+    </update>
+
+    <update id="pigeonholeCourse">
+    update usercourse set isPlaceOnFile = #{isPlaceOnFile,jdbcType=VARCHAR} where classPaiNum = #{classPaiNum,jdbcType=VARCHAR} and cId = #{cId,jdbcType=INTEGER}
+    </update>
+
+    <update id="sortCourse">
+    update usercourse set serialNumber = #{serialNumber,jdbcType=INTEGER} where classPaiNum = #{classPaiNum,jdbcType=VARCHAR} and cId = #{cId,jdbcType=INTEGER}
+    </update>
+
+    <update id="pigeonholeCourseAll">
+    update usercourse set isPlaceOnFile = #{isPlaceOnFile,jdbcType=VARCHAR} where cId = #{cId,jdbcType=INTEGER}
+    </update>
+
+    <delete id="exitCourse">
+     delete from usercourse where classPaiNum = #{classPaiNum,jdbcType=VARCHAR} and cId = #{cId,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="addCourse">
+        insert into usercourse (classPaiNum, cId, role) values (#{classPaiNum,jdbcType=VARCHAR},#{cId,jdbcType=BIGINT},#{role,jdbcType=VARCHAR})
+    </insert>
+
+</mapper>

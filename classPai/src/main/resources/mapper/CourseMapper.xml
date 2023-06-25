@@ -1,0 +1,39 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.CourseDao">
+    <resultMap id="BaseResultMap" type="com.example.demo.entity.superCourse" >
+        <id column="cId" property="cId" jdbcType="INTEGER" />
+        <result column="cName" property="cName" jdbcType="VARCHAR" />
+        <result column="className" property="className" jdbcType="VARCHAR" />
+        <result column="schoolYear" property="schoolYear" jdbcType="VARCHAR" />
+        <result column="semester" property="semester" jdbcType="VARCHAR" />
+        <result column="addCourseCode" property="addCourseCode" jdbcType="VARCHAR" />
+        <result column="backgroundImage" property="backgroundImage" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+    cId, cName, className, schoolYear, semester, addCourseCode, backgroundImage
+    </sql>
+
+    <select id="findCourseByAddCourseCode" resultMap="BaseResultMap">
+    select * from course where addCourseCode=#{addCourseCode};
+    </select>
+    <select id="findCourseByCId" resultMap="BaseResultMap">
+    select * from course where cId=#{cId};
+    </select>
+
+    <insert id="insertCourse"  parameterType="com.example.demo.entity.Course" useGeneratedKeys="true" keyProperty="cId">
+    insert into course (cName, className, schoolYear, semester, addCourseCode, backgroundImage)
+    values (#{cName,jdbcType=VARCHAR}, #{className,jdbcType=VARCHAR},#{schoolYear,jdbcType=VARCHAR},
+      #{semester,jdbcType=VARCHAR}, #{addCourseCode,jdbcType=VARCHAR}, #{backgroundImage,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="editCourse" parameterType="com.example.demo.entity.Course">
+    update course set cName = #{cName,jdbcType=VARCHAR},className = #{className,jdbcType=VARCHAR},schoolYear = #{schoolYear,jdbcType=VARCHAR},semester = #{semester,jdbcType=VARCHAR} where cId = #{cId,jdbcType=INTEGER}
+    </update>
+
+    <delete id="deleteCourse" parameterType="java.lang.String">
+        delete from course where cId=#{cId};
+    </delete>
+</mapper>
